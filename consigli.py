@@ -122,12 +122,17 @@ class point:
 
 class Segment:
 	def __init__(self, A,B ):
+		if(A == B ):
+			raise Exception("The Segment cannot have equale endpoints")
 		self.A= A 
 		self.B = B
 		self.lamb= 	B  + (-1* A)
 
 	def __eq__(self, other):
 		return self.A == other.A and self.lamb == other.lamb
+	def contains(self, other):
+		return self.A == other.A    
+		
 
 
 
