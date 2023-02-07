@@ -1,6 +1,13 @@
 from pprint import pprint
 
 # First question : 
+""" returns the pair (min_point , min_value)
+such that f(min_point)= min_value
+and min_value = min {f(x) : x in list}
+
+list: a non-empty list of numbers
+f a function R -> R
+ """
 def find_min(list , f):
 	if len(list) == 0 or len(list)>100:
 		print("The list cannot be empty or of length > 100.")
@@ -13,12 +20,19 @@ def find_min(list , f):
 
 	return ( min_point , min_value )		
 
+"""Asymptotic analysis: 
+Since the input list is of limited length  <=100, the runnung time depends only on the cost of evaluating the function f at a point a.
 
+Hence, if O(F) is the running time of evaluating the function f at a point a, then the running time  of the above algorithm is of order 100 O(F) = O(F).
+
+On the other hand if the length n of the list is not limted, then the runningt time is of order O(nF)   
+
+"""
 
 # Question 2
 
 def dot_product(a,b):	
-	if(len(a) != len(b) or len(a) ==0 or len(b) ==0 ):
+	if(len(a) != len(b) or len(a) ==0 ):
 		print("The input is not well-defined.")
 	product = 0
 	for i,  a_i in enumerate(a):
@@ -86,6 +100,48 @@ def find_longest_point_chain(points):
 	print("the line y=" + str(line[0]) + " x + (" + str(line[1])  + ") has the longes list with "  + str(len(longest_list)) )		
 
 
+# Question 4
+class point:
+	def __init__(self, x,y ):
+		self.x=x 
+		self.y = y
+	def __eq__(self, other):
+		return (self.x==other.x) and (self.y==other.y)
+	def __add__(self, other):
+		return point(self.x+ other.x , self.y + other.y)
+	def __rmul__(self, other):
+		return point(self.x * other , self.y *other )
+
+	def __str__(self):
+		return "("+ str(self.x) + "," + str(self.y) + str(")")
+
+				
+
+
+
+
+class Segment:
+	def __init__(self, A,B ):
+		self.A= A 
+		self.B = B
+		self.lamb= 	B  + (-1* A)
+
+	def __eq__(self, other):
+		return self.A == other.A and self.lamb == other.lamb
+
+
+
+"""
 points = [ (1,2), (2,4) , (3,6), (0,5), (5,0), (2,3) , (1,4), (4,1) ]
 find_longest_point_chain(points)
-#pprint(lines_in_normalized_form)
+#pprint(lines_in_normalized_form)"""
+
+p1 = point(1,1)
+p2 = point(2,2)
+
+p3 = point(3,3)
+
+L1 = Segment(p1,p2)
+L2= Segment(p1,p3)
+
+print(L1 ==L2  )
