@@ -1,4 +1,5 @@
 from pprint import pprint
+import math
 
 # First question : 
 """ returns the pair (min_point , min_value)
@@ -114,6 +115,9 @@ class point:
 
 	def __str__(self):
 		return "("+ str(self.x) + "," + str(self.y) + str(")")
+	def norm(self):
+		return math.sqrt( self.x**2 + self.y**2  )
+
 
 				
 
@@ -125,13 +129,28 @@ class Segment:
 		if(A == B ):
 			raise Exception("The Segment cannot have equale endpoints")
 		self.A= A 
-		self.B = B
 		self.lamb= 	B  + (-1* A)
+		self.B = B # B is redundant but it is useful for the comparison  operators
 
 	def __eq__(self, other):
-		return self.A == other.A and self.lamb == other.lamb
+		return (self.A == other.A and self.B == other.B) or\
+		 (self.A == other.B and self.B == other.A)
+	def is_parallel_with(self, other):
+		return   (1/self.lamb.norm()) * self.lamb ==  (1/other.lamb.norm())* other.lamb   
+	def in_the_same_line(self, other):
+		return find_normalized_coor( [self.A.x , self.A.y] , [ self.B.x, self.B.y] ) \
+		== find_normalized_coor( [other.A.x , other.A.y] , [ other.B.x, other.B.y] )
 	def contains(self, other):
-		return self.A == other.A    
+		bounsX = [ min(self.A.x , self.B.x ) , max(self.A.x , self.B.x )  ]
+		bounsY = [ min(self.A.y , self.B.y ) , max(self.A.y , self.B.y )  ]
+		return self.in_the_same_line(other) and\
+		 bounsX[0] <= other.A.x <= bounsX[1] and \
+		 bounsX[0] <= other.B.x <= bounsX[1] and \
+		 bounsY[0] <= other.A.y <= bounsY[1] and \
+		 bounsY[0] <= other.B.y <= bounsY[1]
+		
+
+		
 		
 
 
@@ -145,8 +164,11 @@ p1 = point(1,1)
 p2 = point(2,2)
 
 p3 = point(3,3)
+p4 = point(0,1)
+p5 = point(3,4)
 
 L1 = Segment(p1,p2)
 L2= Segment(p1,p3)
+L3=Segment(p4,p5)
 
-print(L1 ==L2  )
+print(L2.contains(L1)  )
